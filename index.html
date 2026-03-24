@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>홀딩 신청 | TheBox Busan</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --red:    #C13030;
+      --cream:  #FDF7F0;
+      --dark:   #141010;
+      --off:    #1E1818;
+      --warm:   #F5EBE0;
+      --tan:    #E2D0BC;
+      --muted:  #8A7060;
+      --white:  #FFFFFF;
+      --yellow: #F5C842;
+      --green:  #4CAF6A;
+      --orange: #F07A30;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* TOPBAR */
+    .topbar { background: var(--red); padding: 10px 0; overflow: hidden; white-space: nowrap; }
+    .topbar-track { display: inline-flex; animation: marquee 22s linear infinite; }
+    .topbar-track span { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; padding: 0 28px; }
+    .topbar-track span.dot { color: rgba(255,255,255,.35); padding: 0 6px; }
+    @keyframes marquee { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
+
+    /* HEADER */
+    header {
+      background: var(--cream);
+      border-bottom: 2px solid var(--dark);
+      padding: 0 48px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo, .logo:link, .logo:visited, .logo:hover, .logo:active {
+      font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 3px;
+      color: var(--dark) !important; text-decoration: none;
+      display: flex; align-items: center;
+    }
+    .logo-the { color: var(--dark) !important; }
+    .logo-box { color: var(--red) !important; }
+    .logo-badge {
+      width: 34px; height: 34px; background: var(--red); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; color: #fff; transform: rotate(-4deg);
+      box-shadow: 3px 3px 0 var(--dark); margin-right: 10px;
+    }
+    .header-right { font-size: 13px; font-weight: 700; color: var(--muted); }
+
+    /* HERO */
+    .form-hero {
+      background: var(--dark); padding: 64px 48px 56px;
+      position: relative; overflow: hidden;
+    }
+    .form-hero::before {
+      content: 'HOLDING';
+      font-family: 'Bebas Neue', sans-serif; font-size: 280px; letter-spacing: 4px;
+      color: rgba(255,255,255,.025); position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      pointer-events: none; white-space: nowrap;
+    }
+    .form-hero::after {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 400px; height: 400px; background: var(--red);
+      border-radius: 50%; opacity: .07; pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 700px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--red); color: #fff; padding: 6px 16px;
+      border-radius: 6px; font-size: 11px; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .hero-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--yellow);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1 } 50% { opacity:.2 } }
+    .hero-h1 {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px,8vw,100px);
+      line-height: .88; letter-spacing: 3px; color: #fff; margin-bottom: 16px;
+    }
+    .hero-h1 .red { color: var(--red); }
+    .hero-ko { font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 300; color: rgba(255,255,255,.5); letter-spacing: 3px; margin-bottom: 24px; }
+    .hero-desc { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.85; max-width: 580px; }
+    .hero-desc strong { color: rgba(255,255,255,.9); }
+
+    /* RULES */
+    .rules-wrap {
+      background: var(--dark); border-top: 1px solid rgba(255,255,255,.06);
+      padding: 32px 48px;
+    }
+    .rules-inner { max-width: 680px; margin: 0 auto; }
+    .rules-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px;
+      color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .rules-title::before { content: '📋'; font-size: 18px; }
+    .rules-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .rules-list li { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.7; padding-left: 18px; position: relative; }
+    .rules-list li::before { content: '·'; position: absolute; left: 0; color: var(--red); font-size: 18px; line-height: 1.3; }
+    .rules-tickets { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    .ticket { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 140px; }
+    .ticket-count { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--yellow); line-height: 1; margin-bottom: 4px; }
+    .ticket-label { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 600; }
+    .ticket-hold { font-size: 13px; color: var(--green); font-weight: 700; margin-top: 4px; }
+
+    /* FORM CONTAINER */
+    .form-container { max-width: 680px; margin: 0 auto; padding: 56px 24px 80px; }
+
+    /* FORM CARD */
+    .form-card {
+      background: var(--white); border: 2px solid var(--dark);
+      border-radius: 16px; box-shadow: 6px 6px 0 var(--dark);
+      padding: 40px 36px 36px; margin-bottom: 24px;
+    }
+
+    /* STEP HEAD */
+    .step-head { margin-bottom: 36px; }
+    .step-tag {
+      display: inline-block; background: var(--red); color: #fff;
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 14px; border-radius: 4px; margin-bottom: 14px;
+    }
+    .step-h2 {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px,6vw,56px);
+      line-height: .9; letter-spacing: 2px; color: var(--dark); margin-bottom: 10px;
+    }
+    .step-h2 .red { color: var(--red); }
+    .step-sub { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 500; }
+
+    /* FIELD */
+    .field-group { margin-bottom: 22px; }
+    .field-label { display: block; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--dark); margin-bottom: 8px; }
+    .field-label .req { color: var(--red); margin-left: 3px; }
+    .field-input {
+      width: 100%; padding: 13px 16px; border: 2px solid var(--dark);
+      border-radius: 8px; font-size: 15px;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+      background: var(--white); color: var(--dark); outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field-input:focus { border-color: var(--red); box-shadow: 3px 3px 0 rgba(193,48,48,.15); }
+    .field-input::placeholder { color: var(--tan); }
+    .field-hint { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+    .form-divider { border: none; border-top: 1px dashed var(--tan); margin: 28px 0; }
+
+    /* CLASS PILL */
+    .pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill-item input[type="radio"] { display: none; }
+    .pill-item label {
+      display: flex; align-items: center; gap: 9px; padding: 11px 18px;
+      border: 2px solid var(--tan); border-radius: 8px; background: var(--white);
+      font-size: 14px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all .15s; user-select: none;
+    }
+    .pill-item label:hover { border-color: var(--dark); color: var(--dark); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--tan); }
+    .pill-item input:checked+label { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 3px 3px 0 var(--dark); transform: translate(-1px,-1px); }
+    .pill-emoji { font-size: 16px; flex-shrink: 0; }
+
+    /* DATE PILL */
+    .date-pill-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .date-pill {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 10px 16px; border: 2px solid var(--tan); border-radius: 10px;
+      background: var(--white); cursor: pointer; transition: all .15s;
+      user-select: none; min-width: 78px;
+    }
+    .date-pill:hover:not(.past) { border-color: var(--dark); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--tan); }
+    .date-pill.selected { background: var(--red); border-color: var(--red); box-shadow: 3px 3px 0 var(--dark); transform: translate(-1px,-1px); }
+    .date-pill.past { background: #f5f5f5; border-color: #ddd; cursor: not-allowed; opacity: .5; }
+
+    .date-pill-month { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 2px; }
+    .date-pill.selected .date-pill-month { color: rgba(255,255,255,.7); }
+    .date-pill.past .date-pill-month { color: #bbb; }
+
+    .date-pill-day { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; line-height: 1; color: var(--dark); }
+    .date-pill.selected .date-pill-day { color: #fff; }
+    .date-pill.past .date-pill-day { color: #bbb; }
+
+    .date-pill-dow { font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 2px; }
+    .date-pill.selected .date-pill-dow { color: rgba(255,255,255,.8); }
+    .date-pill.past .date-pill-dow { color: #bbb; }
+
+    .date-pill-status { font-size: 10px; margin-top: 5px; font-weight: 700; }
+    .date-pill.selected .date-pill-status { color: rgba(255,255,255,.9); }
+    .date-pill.past .date-pill-status { color: #bbb; }
+
+    .date-placeholder { font-size: 13px; color: var(--tan); padding: 12px 0; font-weight: 600; }
+
+    /* ERROR */
+    .field-error {
+      display: none; color: var(--red); font-size: 13px; font-weight: 700;
+      margin-top: 8px; padding: 10px 14px;
+      background: rgba(193,48,48,.07); border-radius: 6px; border-left: 3px solid var(--red);
+    }
+
+    /* BTN */
+    .btn-row { display: flex; gap: 12px; margin-top: 36px; }
+    .btn-submit {
+      flex: 1; padding: 16px 24px; background: var(--red); color: #fff;
+      border: 2px solid var(--red); border-radius: 8px; font-size: 15px; font-weight: 800;
+      font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer;
+      box-shadow: 4px 4px 0 var(--dark); transition: transform .15s, box-shadow .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--dark); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* SUCCESS */
+    .success-box { display: none; text-align: center; padding: 56px 32px; animation: stepIn .5s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes stepIn { from { opacity:0; transform: translateY(20px) scale(.98) } to { opacity:1; transform: translateY(0) scale(1) } }
+    .success-icon { font-size: 80px; margin-bottom: 24px; }
+    .success-tag { display: inline-block; background: var(--green); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 4px; margin-bottom: 20px; }
+    .success-h { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px,7vw,72px); line-height: .9; color: var(--dark); letter-spacing: 2px; margin-bottom: 16px; }
+    .success-h .green { color: var(--green); }
+    .success-p { font-size: 16px; color: var(--muted); line-height: 1.75; max-width: 520px; margin: 0 auto 28px; }
+    .success-back {
+      display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px;
+      background: var(--dark); color: #fff; border-radius: 8px; border: 2px solid var(--dark);
+      font-size: 14px; font-weight: 800; text-decoration: none;
+      box-shadow: 4px 4px 0 var(--tan); transition: transform .15s, box-shadow .15s;
+    }
+    .success-back:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--tan); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); padding: 32px 48px;
+      border-top: 2px solid rgba(255,255,255,.06);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 3px; color: #fff; }
+    .footer-logo span { color: var(--red); }
+    .footer-info { font-size: 12px; color: rgba(255,255,255,.25); line-height: 1.6; text-align: right; }
+
+    /* RESPONSIVE */
+    @media(max-width:768px) {
+      header { padding: 0 20px; height: 56px; }
+      .form-hero { padding: 44px 24px 40px; }
+      .rules-wrap { padding: 28px 24px; }
+      .rules-tickets { flex-direction: column; }
+      .form-container { padding: 40px 20px 60px; }
+      .form-card { padding: 28px 20px; }
+      footer { flex-direction: column; gap: 12px; padding: 28px 24px; }
+      .footer-info { text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-track">
+      <span>홀딩 신청</span><span class="dot">·</span>
+      <span>HOLDING REQUEST</span><span class="dot">·</span>
+      <span>TheBox Busan</span><span class="dot">·</span>
+      <span>Korean Community</span><span class="dot">·</span>
+      <span>홀딩 신청</span><span class="dot">·</span>
+      <span>HOLDING REQUEST</span><span class="dot">·</span>
+      <span>TheBox Busan</span><span class="dot">·</span>
+      <span>Korean Community</span><span class="dot">·</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="https://busanthebox-coder.github.io/thebox/intro/" class="logo" target="_blank" rel="noopener">
+      <div class="logo-badge">📦</div>
+      <span class="logo-the">THE</span><span class="logo-box">BOX</span>
+    </a>
+    <div class="header-right">홀딩 신청서</div>
+  </header>
+
+  <!-- HERO -->
+  <section class="form-hero">
+    <div class="hero-inner">
+      <div class="hero-tag"><span class="hero-dot"></span> 더박스 부산</div>
+      <h1 class="hero-h1">HOLDING<br><span class="red">REQUEST</span></h1>
+      <p class="hero-ko">홀딩 신청서</p>
+      <p class="hero-desc">
+        수업 홀딩을 신청합니다.<br>
+        <strong>반을 선택하면 신청 가능한 날짜가 자동으로 표시됩니다.</strong><br>
+        신청은 수업 <strong>하루 전 오후 10시까지</strong>만 가능합니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <div class="rules-wrap">
+    <div class="rules-inner">
+      <div class="rules-title">홀딩 규정</div>
+      <ul class="rules-list">
+        <li>설정한 요일이 되면 자동으로 횟수가 차감됩니다.</li>
+        <li>홀딩 신청은 <strong style="color:#fff;">본인이 다니는 날 하루 전 오후 10시까지</strong> 가능합니다.</li>
+        <li>마감이 지난 날짜는 자동으로 잠금 처리되어 선택이 불가능합니다.</li>
+      </ul>
+      <div class="rules-tickets">
+        <div class="ticket">
+          <div class="ticket-count">16회권</div>
+          <div class="ticket-label">수강권</div>
+          <div class="ticket-hold">✅ 홀딩 4회 가능</div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-count">32회권</div>
+          <div class="ticket-label">수강권</div>
+          <div class="ticket-hold">✅ 홀딩 10회 가능</div>
+        </div>
+        <div class="ticket">
+          <div class="ticket-count">48회권</div>
+          <div class="ticket-label">수강권</div>
+          <div class="ticket-hold">✅ 홀딩 20회 가능</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM CONTAINER -->
+  <div class="form-container">
+
+    <!-- FORM -->
+    <div id="holding-form">
+      <div class="step-head">
+        <div class="step-tag">홀딩 신청</div>
+        <h2 class="step-h2">신청서<span class="red"> 작성</span></h2>
+        <p class="step-sub">반을 먼저 선택하면 신청 가능한 날짜가 자동으로 나타납니다.</p>
+      </div>
+
+      <div class="form-card">
+        <!-- 이름 -->
+        <div class="field-group">
+          <label class="field-label" for="f-name">이름<span class="req">*</span></label>
+          <input class="field-input" id="f-name" type="text" placeholder="예 : 김하나">
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 반 선택 -->
+        <div class="field-group">
+          <label class="field-label">반<span class="req">*</span></label>
+          <div class="pill-group">
+            <div class="pill-item">
+              <input type="radio" id="cls-mw" name="class" value="월수">
+              <label for="cls-mw"><span class="pill-emoji">📅</span> 월수반</label>
+            </div>
+            <div class="pill-item">
+              <input type="radio" id="cls-tw" name="class" value="화목">
+              <label for="cls-tw"><span class="pill-emoji">📅</span> 화목반</label>
+            </div>
+            <div class="pill-item">
+              <input type="radio" id="cls-ss" name="class" value="토일">
+              <label for="cls-ss"><span class="pill-emoji">📅</span> 토일반</label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 홀딩 날짜 (동적 pill) -->
+        <div class="field-group">
+          <label class="field-label">홀딩 날짜<span class="req">*</span></label>
+          <div class="date-pill-group" id="date-pill-group">
+            <p class="date-placeholder">← 먼저 반을 선택해주세요</p>
+          </div>
+          <p class="field-hint" id="date-hint" style="display:none">
+            🔒 회색으로 잠긴 날짜는 마감 시간(전날 오후 10시)이 지나 신청 불가합니다.
+          </p>
+        </div>
+
+        <!-- 오류 메시지 -->
+        <div class="field-error" id="form-error"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-submit" id="submit-btn" onclick="submitHolding()">홀딩 신청하기 ✓</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-box" id="success-box">
+      <div class="success-icon">📬</div>
+      <div class="success-tag">신청 완료</div>
+      <h2 class="success-h">홀딩<br><span class="green">신청됐어요!</span></h2>
+      <p class="success-p">홀딩 신청이 정상 접수됐습니다.<br>해당 날짜에 크레딧이 자동 차감됩니다.</p>
+      <a href="#" class="success-back" onclick="location.reload(); return false;">← 처음으로 돌아가기</a>
+    </div>
+
+  </div><!-- /form-container -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">THE<span>BOX</span> 📦</div>
+    <div class="footer-info">busanthebox@gmail.com<br>© 2026 TheBox Korean Community Busan</div>
+  </footer>
+
+  <script>
+    // ☆ 홀딩 전용 Apps Script URL로 교체해주세요
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIleEdbHQCKnrL4pBVzfYgvmAjaw57xYNTGpaCZie_xJ8_2COZ41O7du5HVr8LUWqt/exec';
+
+    // 반별 수업 요일 (0=일,1=월,2=화,3=수,4=목,5=금,6=토)
+    const CLASS_DAYS = {
+      '월수': [1, 3],
+      '화목': [2, 4],
+      '토일': [6, 0],
+    };
+
+    const DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
+    const KO_MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+    let selectedDate = null; // 현재 선택된 Date 객체
+
+    // ── 헬퍼 ─────────────────────────────────────────────────────────
+    function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function toMMDD(d) { return pad(d.getMonth() + 1) + '/' + pad(d.getDate()); }
+
+    // 해당 수업일의 마감이 지났는지 (전날 오후 10시 기준)
+    function isPastDeadline(classDate, now) {
+      const dl = new Date(classDate);
+      dl.setDate(dl.getDate() - 1);
+      dl.setHours(22, 0, 0, 0);
+      return now > dl;
+    }
+
+    // ── 앞으로 수업 날짜 count개 계산 ────────────────────────────────
+    function getUpcomingDates(classDays, count) {
+      const result = [];
+      const cursor = new Date();
+      cursor.setHours(0, 0, 0, 0);
+      let safety = 0;
+      while (result.length < count && safety++ < 200) {
+        if (classDays.includes(cursor.getDay())) result.push(new Date(cursor));
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      return result;
+    }
+
+    // ── 날짜 pill 렌더링 (반 선택 시 호출) ──────────────────────────
+    function renderDatePills(className) {
+      const container = document.getElementById('date-pill-group');
+      const hint      = document.getElementById('date-hint');
+      selectedDate    = null;
+
+      if (!className) {
+        container.innerHTML = '<p class="date-placeholder">← 먼저 반을 선택해주세요</p>';
+        hint.style.display  = 'none';
+        return;
+      }
+
+      const classDays = CLASS_DAYS[className] || [];
+      const dates     = getUpcomingDates(classDays, 8);
+      const now       = new Date();
+
+      container.innerHTML = '';
+      hint.style.display  = 'block';
+
+      dates.forEach(d => {
+        const past = isPastDeadline(d, now);
+
+        // 마감 시간 문자열 (툴팁용)
+        const dl = new Date(d);
+        dl.setDate(dl.getDate() - 1);
+        dl.setHours(22, 0, 0, 0);
+        const dlStr = `${KO_MONTHS[dl.getMonth()]} ${dl.getDate()}일 오후 10시까지`;
+
+        const pill = document.createElement('div');
+        pill.className = 'date-pill' + (past ? ' past' : '');
+        pill.title     = past ? `마감 완료 — ${dlStr}` : `신청 마감: ${dlStr}`;
+
+        pill.innerHTML = `
+          <span class="date-pill-month">${KO_MONTHS[d.getMonth()]}</span>
+          <span class="date-pill-day">${d.getDate()}</span>
+          <span class="date-pill-dow">${DAY_NAMES[d.getDay()]}요일</span>
+          <span class="date-pill-status">${past ? '🔒 마감' : '✅ 가능'}</span>
+        `;
+
+        if (!past) {
+          pill.addEventListener('click', () => {
+            document.querySelectorAll('.date-pill.selected').forEach(p => p.classList.remove('selected'));
+            pill.classList.add('selected');
+            selectedDate = d;
+            document.getElementById('form-error').style.display = 'none';
+          });
+        }
+
+        container.appendChild(pill);
+      });
+    }
+
+    // 반 변경 이벤트
+    document.querySelectorAll('input[name="class"]').forEach(r => {
+      r.addEventListener('change', () => renderDatePills(r.value));
+    });
+
+    // ── 제출 ─────────────────────────────────────────────────────────
+    async function submitHolding() {
+      const errEl = document.getElementById('form-error');
+      errEl.style.display = 'none';
+      errEl.textContent   = '';
+
+      const name    = v('f-name');
+      const classEl = document.querySelector('input[name="class"]:checked');
+
+      if (!name) {
+        errEl.textContent = '⚠️ 이름을 입력해주세요.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!classEl) {
+        errEl.textContent = '⚠️ 반을 선택해주세요.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!selectedDate) {
+        errEl.textContent = '⚠️ 홀딩 날짜를 선택해주세요.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      // 제출 직전 마감 재검사 (페이지 오래 열어둔 경우 대비)
+      const now = new Date();
+      if (isPastDeadline(selectedDate, now)) {
+        errEl.textContent = '⛔ 방금 마감 시간이 지났습니다. 날짜를 다시 선택해주세요.';
+        errEl.style.display = 'block';
+        renderDatePills(classEl.value);
+        return;
+      }
+
+      const className = classEl.value;
+      const dateStr   = toMMDD(selectedDate);
+      const dowStr    = DAY_NAMES[selectedDate.getDay()] + '요일';
+
+      const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} `
+               + `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+      const data = {
+        "제출시간":  ts,
+        "이름":     name,
+        "홀딩날짜": dateStr,
+        "반":       className,
+        "요일":     `${dowStr} (${dateStr})`,
+      };
+
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = '전송 중...';
+      btn.disabled    = true;
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method:  'POST',
+          mode:    'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body:    JSON.stringify(data)
+        });
+
+        document.getElementById('holding-form').style.display = 'none';
+        const successBox = document.getElementById('success-box');
+        successBox.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (e) {
+        errEl.textContent   = '⚠️ 전송 오류: ' + e.message;
+        errEl.style.display = 'block';
+        btn.textContent     = '홀딩 신청하기 ✓';
+        btn.disabled        = false;
+      }
+    }
+  </script>
+</body>
+
+</html>
