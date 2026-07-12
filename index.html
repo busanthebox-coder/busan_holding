@@ -484,7 +484,6 @@
     function v(id) { return (document.getElementById(id)?.value || '').trim(); }
     function pad(n) { return String(n).padStart(2, '0'); }
     function toMMDD(d) { return pad(d.getMonth() + 1) + '/' + pad(d.getDate()); }
-    function toYMD(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
 
     // 해당 수업일의 마감이 지났는지 (전날 오후 10시 기준)
     function isPastDeadline(classDate, now) {
@@ -620,7 +619,6 @@
 
       const className = classEl.value;
       const dateStr   = toMMDD(selectedDate);
-      const fullDate  = toYMD(selectedDate);
       const dowStr    = DAY_NAMES[selectedDate.getDay()] + '요일';
 
       const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} `
@@ -629,7 +627,7 @@
       const data = {
         "제출시간":  ts,
         "이름":     name,
-        "홀딩날짜": fullDate,
+        "홀딩날짜": dateStr,
         "반":       className,
         "요일":     `${dowStr} (${dateStr})`,
       };
