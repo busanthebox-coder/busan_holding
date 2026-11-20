@@ -331,7 +331,7 @@
       <p class="hero-desc">
         수업 홀딩을 신청합니다.<br>
         <strong>반을 선택하면 신청 가능한 날짜가 자동으로 표시됩니다.</strong><br>
-        신청은 수업 <strong>하루 전 오후 10시까지</strong>만 가능합니다.
+        신청은 수업 <strong>하루 전 오후 10시(한국시간)까지</strong>만 가능합니다.
       </p>
     </div>
   </section>
@@ -342,7 +342,7 @@
       <h2 class="rules-title">홀딩 규정</h2>
       <ul class="rules-list">
         <li>수업 요일마다 수강 횟수가 자동으로 차감되며, 홀딩을 신청한 날은 차감되지 않습니다.</li>
-        <li>홀딩 신청은 <strong style="color:#fff;">본인 수업일 하루 전 오후 10시까지</strong> 가능합니다.</li>
+        <li>홀딩 신청은 <strong style="color:#fff;">본인 수업일 하루 전 오후 10시(한국시간)까지</strong> 가능합니다.</li>
         <li>마감이 지난 날짜는 자동으로 잠금 처리되어 선택할 수 없습니다.</li>
         <li>🎌 <strong style="color:#fff;">공휴일은 수업이 진행되지 않으므로 수강 횟수가 차감되지 않습니다.</strong></li>
         <li>💡 홀딩은 더박스가 제공하는 혜택입니다. 홀딩 기간에도 자리는 그대로 유지되며, 중도 환불 시에는 홀딩한 횟수도 수강 횟수에 포함해 정산됩니다.</li>
@@ -421,7 +421,7 @@
             <p class="date-placeholder">← 먼저 반을 선택해주세요</p>
           </div>
           <p class="field-hint" id="date-hint" style="display:none">
-            🔒 회색으로 잠긴 날짜는 마감 시간(전날 오후 10시)이 지나 신청 불가합니다.
+            🔒 회색으로 잠긴 날짜는 마감 시간(한국시간 전날 오후 10시)이 지나 신청 불가합니다.
           </p>
         </div>
 
@@ -479,31 +479,35 @@
     const DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
     const KO_MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 
-    let selectedDate = null; // 현재 선택된 Date 객체
+    const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+    let selectedDate = null; // 한국 날짜를 UTC 자정으로 표현
     let pendingRequestKey = '', pendingRequestId = '';
 
     // ── 헬퍼 ─────────────────────────────────────────────────────────
     function v(id) { return (document.getElementById(id)?.value || '').trim(); }
     function pad(n) { return String(n).padStart(2, '0'); }
-    function toMMDD(d) { return pad(d.getMonth() + 1) + '/' + pad(d.getDate()); }
+    function toMMDD(d) { return pad(d.getUTCMonth() + 1) + '/' + pad(d.getUTCDate()); }
 
-    // 해당 수업일의 마감이 지났는지 (전날 오후 10시 기준)
-    function isPastDeadline(classDate, now) {
+    // 한국시간 전날 22:00 = UTC 전날 13:00. 브라우저 시간대와 무관.
+    function deadlineAt(classDate) {
       const dl = new Date(classDate);
-      dl.setDate(dl.getDate() - 1);
-      dl.setHours(22, 0, 0, 0);
-      return now > dl;
+      dl.setUTCDate(dl.getUTCDate() - 1);
+      dl.setUTCHours(13, 0, 0, 0);
+      return dl;
+    }
+    function isPastDeadline(classDate, now) {
+      return now.getTime() > deadlineAt(classDate).getTime();
     }
 
     // ── 앞으로 수업 날짜 count개 계산 ────────────────────────────────
     function getUpcomingDates(classDays, count) {
       const result = [];
-      const cursor = new Date();
-      cursor.setHours(0, 0, 0, 0);
+      const cursor = new Date(Date.now() + KST_OFFSET_MS);
+      cursor.setUTCHours(0, 0, 0, 0);
       let safety = 0;
       while (result.length < count && safety++ < 200) {
-        if (classDays.includes(cursor.getDay())) result.push(new Date(cursor));
-        cursor.setDate(cursor.getDate() + 1);
+        if (classDays.includes(cursor.getUTCDay())) result.push(new Date(cursor));
+        cursor.setUTCDate(cursor.getUTCDate() + 1);
       }
       return result;
     }
@@ -531,10 +535,8 @@
         const past = isPastDeadline(d, now);
 
         // 마감 시간 문자열 (툴팁용)
-        const dl = new Date(d);
-        dl.setDate(dl.getDate() - 1);
-        dl.setHours(22, 0, 0, 0);
-        const dlStr = `${KO_MONTHS[dl.getMonth()]} ${dl.getDate()}일 오후 10시까지`;
+        const dl = deadlineAt(d);
+        const dlStr = `${KO_MONTHS[dl.getUTCMonth()]} ${dl.getUTCDate()}일 오후 10시(한국시간)까지`;
 
         const pill = document.createElement('button');
         pill.type      = 'button';
@@ -543,15 +545,15 @@
         pill.setAttribute('aria-pressed', 'false');
         if (past) {
           pill.disabled = true;
-          pill.setAttribute('aria-label', `${KO_MONTHS[d.getMonth()]} ${d.getDate()}일 ${DAY_NAMES[d.getDay()]}요일 — 마감`);
+          pill.setAttribute('aria-label', `${KO_MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}일 ${DAY_NAMES[d.getUTCDay()]}요일 — 마감`);
         } else {
-          pill.setAttribute('aria-label', `${KO_MONTHS[d.getMonth()]} ${d.getDate()}일 ${DAY_NAMES[d.getDay()]}요일 홀딩 신청`);
+          pill.setAttribute('aria-label', `${KO_MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}일 ${DAY_NAMES[d.getUTCDay()]}요일 홀딩 신청`);
         }
 
         pill.innerHTML = `
-          <span class="date-pill-month">${KO_MONTHS[d.getMonth()]}</span>
-          <span class="date-pill-day">${d.getDate()}</span>
-          <span class="date-pill-dow">${DAY_NAMES[d.getDay()]}요일</span>
+          <span class="date-pill-month">${KO_MONTHS[d.getUTCMonth()]}</span>
+          <span class="date-pill-day">${d.getUTCDate()}</span>
+          <span class="date-pill-dow">${DAY_NAMES[d.getUTCDay()]}요일</span>
           <span class="date-pill-status">${past ? '🔒 마감' : '✅ 가능'}</span>
         `;
 
@@ -621,12 +623,9 @@
 
       const className = classEl.value;
       const dateStr   = toMMDD(selectedDate);
-      const dowStr    = DAY_NAMES[selectedDate.getDay()] + '요일';
+      const dowStr    = DAY_NAMES[selectedDate.getUTCDay()] + '요일';
 
-      const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} `
-               + `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-
-      const targetDate = `${selectedDate.getFullYear()}-${pad(selectedDate.getMonth()+1)}-${pad(selectedDate.getDate())}`;
+      const targetDate = `${selectedDate.getUTCFullYear()}-${pad(selectedDate.getUTCMonth()+1)}-${pad(selectedDate.getUTCDate())}`;
       const requestKey = JSON.stringify([name, className, targetDate]);
       if (pendingRequestKey !== requestKey || !pendingRequestId) {
         const bytes = new Uint8Array(16);
@@ -652,6 +651,21 @@
         });
         if (!res.ok) throw new Error('server ' + res.status);
         const result = await res.json();
+        const publicErrors = new Set([
+          '이름과 개인정보 동의를 확인해주세요.',
+          '다른 접수 처리 중입니다. 잠시 후 같은 신청을 다시 확인해주세요.',
+          '신청 가능한 날짜가 아니거나 전날 오후 10시 마감이 지났습니다.',
+          '이름과 반을 확인해주세요. 해결되지 않으면 더박스에 문의해주세요.',
+          '이미 처리 중이거나 정산된 날짜입니다. 직원에게 문의해주세요.',
+          '양쪽 시트의 접수 확인이 필요합니다. 한쪽에 저장됐을 수 있으니 같은 신청을 새로 만들지 말고 직원에게 문의해주세요.'
+        ]);
+        if (result?.ok === false && publicErrors.has(result.error)) {
+          errEl.textContent = '⚠️ ' + result.error;
+          errEl.style.display = 'block';
+          btn.textContent = '홀딩 신청하기 ✓';
+          btn.disabled = false;
+          return;
+        }
         if (!result || result.ok !== true ||
             !['SAVED', 'ALREADY_EXISTS'].includes(result.status) ||
             result.requestId !== data.requestId) {
